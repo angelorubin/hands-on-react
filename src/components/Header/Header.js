@@ -6,37 +6,47 @@ import {
   Nav,
   NavItem,
   NavLink,
-  NavbarToggler
+  NavbarToggler,
+  ButtonDropdown,
+  DropdownToggle,
+  DropdownMenu,
+  DropdownItem
 } from "reactstrap";
 import { Link } from "react-router-dom";
 
 export const Header = () => {
-  const [open, setOpen] = useState(false);
+  const [isOpen, setIsOpen] = useState(false);
+  const [dropdownOpen, setDropdownOpen] = useState(false);
+
+  const dropdownToggle = () => {
+    setDropdownOpen(!dropdownOpen);
+  };
 
   const toggle = () => {
-    setOpen(!open);
+    setIsOpen(!isOpen);
   };
 
   return (
-    <Navbar color="light" light expand="md">
+    <Navbar color="primary" dark expand="md">
       <NavbarBrand tag={Link} to={"/"}>
         Painel
       </NavbarBrand>
 
       <NavbarToggler onClick={toggle} />
 
-      <Collapse isOpen={open} navbar>
+      <Collapse isOpen={isOpen} navbar>
         <Nav className="ml-auto" navbar>
-          <NavItem href="#">
-            <NavLink tag={Link} to={"/users-list"}>
-              Listar Usuários
-            </NavLink>
-          </NavItem>
-          <NavItem href="#">
-            <NavLink tag={Link} to={"/user-create"}>
-              Cadastrar usuário
-            </NavLink>
-          </NavItem>
+          <ButtonDropdown isOpen={dropdownOpen} toggle={dropdownToggle}>
+            <DropdownToggle caret>Usuários</DropdownToggle>
+            <DropdownMenu>
+              <DropdownItem>
+                <Link to={"/users-list"}>Listar usuários</Link>
+              </DropdownItem>
+              <DropdownItem>
+                <Link to={"/user-create"}>Cadastrar usuários</Link>
+              </DropdownItem>
+            </DropdownMenu>
+          </ButtonDropdown>
         </Nav>
       </Collapse>
     </Navbar>
