@@ -2,8 +2,8 @@ import React from "react";
 import { Header } from "../components/Header/Header";
 import { BrowserRouter as Router, Route } from "react-router-dom";
 import { Home } from "./Home/Home";
-import { UsersList } from "./Users/UsersList";
-import { UserCreate } from "./Users/UserCreate";
+import { UsersList } from "./User/UsersList";
+import { UserCreate } from "./User/UserCreate";
 
 export const Root = () => {
   return (
