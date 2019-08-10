@@ -4,10 +4,8 @@ import {
   NavbarBrand,
   Collapse,
   Nav,
-  NavItem,
-  NavLink,
   NavbarToggler,
-  ButtonDropdown,
+  Dropdown,
   DropdownToggle,
   DropdownMenu,
   DropdownItem
@@ -31,22 +29,22 @@ export const Header = () => {
       <NavbarBrand tag={Link} to={"/"}>
         Painel
       </NavbarBrand>
-
       <NavbarToggler onClick={toggle} />
-
       <Collapse isOpen={isOpen} navbar>
-        <Nav className="ml-auto" navbar>
-          <ButtonDropdown isOpen={dropdownOpen} toggle={dropdownToggle}>
-            <DropdownToggle caret>Usuários</DropdownToggle>
-            <DropdownMenu>
+        <Nav navbar>
+          <Dropdown isOpen={dropdownOpen} toggle={dropdownToggle}>
+            <DropdownToggle caret size="sm">
+              usuários
+            </DropdownToggle>
+            <DropdownMenu right>
               <DropdownItem>
-                <Link to={"/users-list"}>Listar usuários</Link>
+                <Link to={"/users-list"}>listar usuários</Link>
               </DropdownItem>
               <DropdownItem>
-                <Link to={"/user-create"}>Cadastrar usuários</Link>
+                <Link to={"/user-create"}>cadastrar usuários</Link>
               </DropdownItem>
             </DropdownMenu>
-          </ButtonDropdown>
+          </Dropdown>
         </Nav>
       </Collapse>
     </Navbar>

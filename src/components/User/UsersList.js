@@ -1,6 +1,8 @@
-import React, { useState, useEffect } from "react";
-import { Table, Alert, Button } from "reactstrap";
+import React from "react";
+import { Table, Alert } from "reactstrap";
 import { http } from "../../config";
+import { UserEdit } from "./UserEdit";
+import { useDispatch, useSelector } from "react-redux";
 
 const styles = {
   root: {
@@ -15,29 +17,16 @@ const styles = {
 };
 
 export const UsersList = () => {
-  const [users, setUsers] = useState([
-    // { id: 0, fullname: "manoela", email: "manoelarubin@gmail.com" }
-  ]);
-
-  useEffect(() => {
-    http
-      .get("users")
-      .then(data => {
-        setUsers(prevState => {
-          return (prevState = [...users, ...data.data]);
-        });
-      })
-      .catch(err => console.log(err));
-  }, []);
+  const users = useSelector(state => state.userReducer.users);
 
   return users.length > 0 ? (
     <div style={styles.root}>
       <h4 style={styles.title}>Listagem de usuários</h4>
-      <Table striped style={styles.table} size="sm" responsive>
+      <Table size="sm" dark style={styles.table} responsive>
         <thead>
           <tr>
             <th>id</th>
-            <th>nome completo</th>
+            <th>nome</th>
             <th>email</th>
             <th>telefone</th>
             <th>celular</th>
@@ -54,11 +43,17 @@ export const UsersList = () => {
                 <td>{user.email}</td>
                 <td>{user.telephone}</td>
                 <td>{user.cellphone}</td>
-                <td>{user.website}</td>
                 <td>
-                  <Button size="sm" color="primary">
-                    editar
-                  </Button>
+                  <a
+                    target="_blank"
+                    href={user.website}
+                    rel="noopener noreferrer"
+                  >
+                    {user.website}
+                  </a>
+                </td>
+                <td>
+                  <UserEdit userId={user.id} users={users} onClick={""} />
                 </td>
               </tr>
             );

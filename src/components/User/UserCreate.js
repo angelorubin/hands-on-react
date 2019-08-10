@@ -1,4 +1,5 @@
 import React, { useState } from "react";
+import { useDispatch } from "react-redux";
 import { Formik, Field, Form } from "formik";
 import {
   FormGroup,
@@ -32,6 +33,7 @@ const UserSchema = Yup.object().shape({
 const customInputForm = ({ field, form: { touched, errors }, ...props }) => (
   <div>
     <Input
+      bsSize="sm"
       invalid={!!(touched[field.name] && errors[field.name])}
       {...field}
       {...props}
@@ -44,12 +46,15 @@ const customInputForm = ({ field, form: { touched, errors }, ...props }) => (
 
 export const UserCreate = () => {
   const [userAlert, setUserAlert] = useState(false);
+  const dispatch = useDispatch();
+
   const onShowAlert = () => {
     setUserAlert(true);
     setTimeout(() => {
       setUserAlert(false);
     }, 3000);
   };
+
   return (
     <div style={styles.root}>
       <h5 style={styles.title}>Cadastrar usuário (Formik)</h5>
@@ -63,24 +68,20 @@ export const UserCreate = () => {
         }}
         validationSchema={UserSchema}
         onSubmit={(values, { resetForm, setSubmitting }) => {
-          http
-            .post("users", values)
-
-            .then(res => {
-              console.log("O usuário foi salvo com sucesso.");
-              console.table(res.data);
-              onShowAlert();
-              resetForm();
-              setSubmitting(false);
-            });
+          http.post("users", values).then(res => {
+            console.log("O usuário foi salvo com sucesso.");
+            console.table(res.data);
+            onShowAlert();
+            resetForm();
+            setSubmitting(false);
+          });
         }}
       >
         {({ errors, touched, isSubmitting }) => (
           <>
             <Alert color="info" isOpen={userAlert}>
-              Usuário salvo com sucesso.
+              O usuário foi salvo com sucesso.
             </Alert>
-
             <Form>
               <FormGroup>
                 <Label for="fullname">nome completo</Label>
@@ -115,7 +116,12 @@ export const UserCreate = () => {
                 <Field name="website" type="text" component={customInputForm} />
               </FormGroup>
               <FormGroup>
-                <Button type="submit" size="sm" disabled={isSubmitting}>
+                <Button
+                  type="submit"
+                  size="sm"
+                  color="primary"
+                  disabled={isSubmitting}
+                >
                   Salvar
                 </Button>
               </FormGroup>
@@ -123,48 +129,6 @@ export const UserCreate = () => {
           </>
         )}
       </Formik>
-
-      {/*
-      <h5 style={styles.title}>Cadastrar novo usuário sem Formik</h5>
-      <Form>
-        <FormGroup>
-          <Label for="fullname">nome completo</Label>
-          <Input required type="text" name="fullname" id="fullname" />
-          <FormFeedback>mensagem de erro aqui</FormFeedback>
-        </FormGroup>
-        <FormGroup>
-          <Label for="email">email</Label>
-          <Input required type="email" name="email" id="email" />
-        </FormGroup>
-        <FormGroup>
-          <Label for="phone">telefone</Label>
-          <Input
-            type="telephone"
-            name="telephone"
-            id="telephone"
-            pattern="[0-9]{2}-[0-9]{4}-[0-9]{4}"
-            required
-          />
-          <FormText>exemplo : 19-1234-5678</FormText>
-        </FormGroup>
-        <FormGroup>
-          <Label for="cellphone">celular</Label>
-          <Input
-            type="cellphone"
-            name="cellphone"
-            id="cellphone"
-            pattern="[0-9]{2}-[0-9]{4}-[0-9]{4}"
-            required
-          />
-          <FormText>exemplo : 19-1234-5678</FormText>
-        </FormGroup>
-        <FormGroup>
-          <Label for="email">website</Label>
-          <Input type="text" name="website" id="website" />
-        </FormGroup>
-        <Button color="primary">cadastrar</Button>
-      </Form>
-      */}
     </div>
   );
 };
